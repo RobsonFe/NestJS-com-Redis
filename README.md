@@ -22,52 +22,97 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+## Descrição
+Neste Projeto desenvolvo uma aplicação em NestJS onde lida com uma grande quantidade de requisições e consegue por meio do Redis, ter uma performance. 
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Tecnologias 
 
-## Installation
+- NestJS
+- Redis
+- Prisma
+- SQLite
+- Docker
 
-```bash
-$ yarn install
-```
+## Instalação
 
-## Running the app
-
-```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
-```
-
-## Test
+- Para criar o projeto: 
 
 ```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+$ nest new cache
 ```
 
-## Support
+- Instale as seguintes dependências no projeto.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+npm install -D prisma 
+npm install tsx
+npm install @faker-js/faker
+npm install @prisma/client
+npx prisma init --datasource-provider SQLite
+```
+Você conseguirá instalar o prisma no modo de desenvolvimento, configuração do projeto para TypeScript, Dados falsos gerados pelo FakerJS para popular o banco de dados, o prisma no modo cliente e por ultimo o banco de dados da aplicação, no qual é o SQLite.
 
-## Stay in touch
+- Execute as migrations
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+npx prisma migrate dev 
+```
+
+- Crie os dados falsos após configurar o arquivo `seed.ts`
+
+ ```bash
+npx prisma db seed
+```
+- Instale o Redis
+
+```bash
+npm install ioredis
+```
+
+## Execute a Aplicação.
+
+```bash
+npm run start
+```
+## Execute o container Docker com o banco de dados Redis
+
+```bash
+docker run -d --name redis -p 6379:6379 redis
+```
+
+## Documentação
+
+- [NestJS](https://docs.nestjs.com)
+- [Prisma](https://www.prisma.io/docs)
+- [Docker](https://docs.docker.com)
+- [Redis](https://github.com/luin/ioredis)
+
+## Endpoint
+
+```bash
+http://localhost:3000/users
+```
+
+## Imagens 
+
+Antes do Redis
+
+- Observe que mesmo usando o SQLite que é um banco de dados leve para testes, retornou 30 segundos os dados do cliente.
+ 
+   <a href="https://imgur.com/ptPrpoN" target="_blank"><img src="https://i.imgur.com/ptPrpoN.jpg" title="source: imgur.com" /></a>
+
+Depois do Redis
+
+- Observe que reduziu o tempo de resposta para 5 segundos. 
+
+<a href="https://imgur.com/ujwgBjQ" target="_blank"><img src="https://i.imgur.com/ujwgBjQ.jpg" title="source: imgur.com" /></a>
+
+Requisição no Banco de Dados 
+
+- A Requisição primeiro vai no banco e só depois lida com o cache para melhorar o desempenho do site.
+
+<a href="https://imgur.com/rBZRjUZ" target="_blank"><img src="https://i.imgur.com/rBZRjUZ.jpg" title="source: imgur.com" /></a>
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+[MIT licensed](LICENSE).
